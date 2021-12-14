@@ -3,6 +3,10 @@ const cityName = document.querySelector('.city');
 const windParameters = document.querySelector('.wind');
 const textInput = document.querySelector('.text-input')
 const checkBtn = document.querySelector('.check')
+const pressureParameter = document.querySelector('.pressure')
+const perceptibleDegree = document.querySelector('.perceptibleDegree')
+const weatherConditions = document.querySelector('.weatherConditions');
+const backgroundApp = document.querySelector('.backgroundApp');
 
 const apiKey = `396386be9ec566cffc828f15d0cdb301`;
 let city = ''
@@ -16,11 +20,20 @@ fetch(api)
     }
 })
 .then(response => response.json())
-.then(({name, main, wind}) => {
-    let temperatur = Math.round(main.temp)
-    cityName.innerHTML = name;
-    degree.innerHTML = temperatur + '&#8451';
-    windParameters.innerHTML = wind.speed + 'm/s';
+.then(({name, main, weather, wind}) => {
+    let temperature = Math.round(main.temp)
+    let atmosphericConditions = '';
+    weather.forEach(item => atmosphericConditions = item.main)
+    cityName.innerHTML = 'Miasto: '+ name;
+    degree.innerHTML = 'Temperatura: ' + temperature + '&#8451';
+    perceptibleDegree.innerHTML = 'Odczuwalna temperatura: ' + main.feels_like + '&#8451';
+    windParameters.innerHTML = 'Prędkość wiatru: ' + wind.speed + 'm/s';
+    pressureParameter.innerHTML = 'Ciśnienie: ' + main.pressure + 'hPa';
+    weatherConditions.innerHTML = 'Warunki pogodowe: ' + atmosphericConditions ;
+
+
+    bgDay(temperature, atmosphericConditions)
+
 });
 }
 
@@ -31,3 +44,37 @@ const checkWeather = (e) => {
 }
 
 checkBtn.addEventListener('click', checkWeather)
+
+const createSnow = () => {
+    const snowFlake = document.createElement('i');
+    snowFlake.classList.add('snowFlakeClass')
+    snowFlake.style.left = Math.random() * window.innerWidth + 'px';
+    snowFlake.style.animationDuration = Math.random() * 5 + 3 + 's';
+    snowFlake.style.opacity = Math.random();
+    document.querySelector('.snow').appendChild(snowFlake)
+    console.log(snowFlake)
+
+    setTimeout(() => {
+        snowFlake.remove()
+    }, 8000)
+}
+
+const bgDay = (temperature, condition) => {
+    if (temperature <= 10 && condition === 'Clouds'){
+        backgroundApp.style.background = `url("images/cloudyBg.jpg")`;
+        backgroundApp.classList.remove('snow')
+    } else if(temperature <= 0 && condition === 'Snow'){
+        backgroundApp.style.background = `url("images/snowingBg.jpg")`;
+        backgroundApp.classList.add('snow');
+        setInterval(createSnow, 50)
+        //backgroundApp.classList.remove('snow')
+        //createSnow.stop()
+    } else if (condition === 'Mist'){
+        backgroundApp.style.background = `url("images/mistBg.jpg")`;
+        backgroundApp.classList.remove('snow')
+    }
+}
+
+
+
+
