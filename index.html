@@ -9,17 +9,22 @@
     <title>WeatherApp</title>
 </head>
 <body>
-<div class="wetherApp">
+<div class="backgroundApp snow">
+<div class="weatherApp">
     <h1>Weather App</h1>
     <form action="">
-        <input type="text" class="text-input">
+        <input type="text" class="text-input" placeholder="Podaj miasto">
         <button class="check">Sprawdź</button>
     </form>
     <div class="weatherApp-data">
-        <p class="city"></p>
-        <p class="degree"></p>
-        <p class="wind"></p>
+        <div class="city parameterStyle"></div>
+        <div class="degree parameterStyle"></div>
+        <div class="perceptibleDegree parameterStyle"></div>
+        <div class="wind parameterStyle"></div>
+        <div class="pressure parameterStyle"></div>
+        <div class="weatherConditions parameterStyle"></div>
     </div>
+</div>
 </div>
 <script src="app.js"></script>
 </body>
